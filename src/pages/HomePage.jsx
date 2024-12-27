@@ -1,62 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  const [recipes, setRecipes] = useState([]);
-
-  useEffect(() => {
-    fetch("/src/data/recipes.json")
-      .then((response) => response.json())
-      .then((data) =>
-        setRecipes(
-          data.map((recipe) => ({
-            ...recipe,
-            image: recipe.image || null, // Mendukung gambar kosong
-          }))
-        )
-      );
-  }, []);
+  const bestRecipes = [
+    {
+      id: 1,
+      name: "Espresso",
+      image: "https://static.vecteezy.com/system/resources/previews/023/438/448/original/espresso-coffee-cutout-free-png.png",
+    },
+    {
+      id: 2,
+      name: "Cappuccino",
+      image: "https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG",
+    },
+    {
+      id: 3,
+      name: "Latte",
+      image: "https://upload.wikimedia.org/wikipedia/commons/8/88/Latte_art.jpg",
+    },
+  ];
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">CoffeeVerse</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {recipes.map((recipe) => (
+    <div
+      className="min-h-screen bg-cover bg-center text-white flex flex-col items-center justify-center"
+      style={{
+        backgroundImage:
+          "url('https://images.unsplash.com/photo-1556218014-c9233f1ebfcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080')",
+      }}
+    >
+      <div className="bg-black bg-opacity-50 p-6 text-center rounded-lg">
+        <h1 className="text-4xl font-bold mb-4">Welcome to CoffeeVerse</h1>
+        <p className="text-lg mb-6">
+          Explore the best coffee recipes from around the world.
+        </p>
+        <Link
+          to="/recipes"
+          className="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition duration-300"
+        >
+          Discover Recipes
+        </Link>
+      </div>
+
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+        {bestRecipes.map((recipe) => (
           <div
             key={recipe.id}
-            className="bg-white rounded shadow p-4 hover:shadow-lg transition"
+            className="bg-white text-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
           >
-            <div className="w-150 h-150 overflow-hidden flex items-center justify-center bg-gray-100">
-              <img
-                src={
-                  recipe.image instanceof File
-                    ? URL.createObjectURL(recipe.image)
-                    : recipe.image
-                }
-                alt={recipe.name}
-                className="max-w-full max-h-full object-contain"
-                style={{ width: "150px", height: "150px" }}
-              />
+            <img
+              src={recipe.image}
+              alt={recipe.name}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="text-xl font-bold">{recipe.name}</h3>
+              <p className="text-sm text-gray-700">A delightful coffee recipe.</p>
+              <Link
+                to={`/recipe/${recipe.id}`}
+                className="block mt-4 text-blue-500 hover:underline"
+              >
+                View Recipe
+              </Link>
             </div>
-            <h2 className="text-lg font-bold mt-2">{recipe.name}</h2>
-            <p className="text-sm text-gray-600">
-              {recipe.ingredients.split(",").slice(0, 2).join(",")}...
-            </p>
-            <Link
-              to={`/recipe/${recipe.id}`}
-              className="text-blue-500 hover:underline mt-2 block"
-            >
-              View Details
-            </Link>
           </div>
         ))}
       </div>
-      <Link
-        to="/edit"
-        className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
-      >
-        Add Recipe
-      </Link>
     </div>
   );
 };

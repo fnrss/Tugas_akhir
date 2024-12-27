@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -20,7 +19,15 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/edit"
+              to="/recipes"
+              className="hover:text-gray-200 transition duration-300"
+            >
+              Show Recipes
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/add"
               className="hover:text-gray-200 transition duration-300"
             >
               Add Recipe
