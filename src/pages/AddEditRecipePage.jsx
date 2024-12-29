@@ -8,7 +8,7 @@ const AddEditItemPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
-    image: null, // Untuk file gambar
+    image: null, // menyimpan data input
     ingredients: "",
     steps: "",
   });
@@ -16,7 +16,7 @@ const AddEditItemPage = () => {
 
   useEffect(() => {
     if (id) {
-      fetchItem(id);
+      fetchItem(id);  //mengambil data dari Supabase dan mengisi form dengan data tersebut
     }
   }, [id]);
 
@@ -193,6 +193,7 @@ const AddEditItemPage = () => {
             value={formData.ingredients}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
+            style={{ whiteSpace: 'pre-wrap' }}
           />
         </div>
         <div className="mb-4">
@@ -205,6 +206,7 @@ const AddEditItemPage = () => {
             value={formData.steps}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded"
+            style={{ whiteSpace: 'pre-wrap' }}
           />
         </div>
         <button

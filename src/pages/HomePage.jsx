@@ -4,7 +4,6 @@ import supabase from "../Config/SupabaseClient";
 import Footer from "../components/Footer"; // Import Footer
 
 const Homepage = () => {
-  console.log(supabase)
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -19,21 +18,38 @@ const Homepage = () => {
       return;
     }
 
-    setRecipes(data.map((recipe) => ({
-      ...recipe,
-      image: recipe.image || null,
-    })));
+    setRecipes(
+      data.map((recipe) => ({
+        ...recipe,
+        image: recipe.image || null,
+      }))
+    );
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-grow p-6 bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-300">
-        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-6">
+    <div
+      className="flex flex-col min-h-screen"
+      style={{
+        backgroundImage: `url('/kopi2.jpg')`, // Ganti dengan path gambar Anda
+        backgroundSize: "cover", // Menutup seluruh area
+        backgroundPosition: "center", // Fokus pada tengah gambar
+        backgroundRepeat: "no-repeat", // Tidak mengulangi gambar
+        backgroundAttachment: "fixed", // Membuat gambar tetap saat scroll
+      }}
+    >
+      <div className="flex-grow p-6">
+        <div className="max-w-6xl mx-auto bg-white bg-opacity-80 rounded-lg shadow-lg p-6">
           <h1 className="text-4xl font-extrabold text-yellow-600 mb-6 text-center">
             Welcome to <span className="text-yellow-700">CoffeeVerse</span>
           </h1>
+          <h2
+            className="text-3xl font-bold text-yellow-700 mb-4 text-center"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Best Recipe
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {recipes.map((recipe) => (
+            {recipes.slice(0, 3).map((recipe) => (
               <div
                 key={recipe.id}
                 className="bg-yellow-50 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
@@ -68,7 +84,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-      <Footer /> {/* Footer hanya ditambahkan di sini */}
+      <Footer />
     </div>
   );
 };
