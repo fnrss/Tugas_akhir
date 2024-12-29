@@ -1,72 +1,76 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import supabase from "../Config/SupabaseClient";
+import Footer from "../components/Footer"; // Import Footer
 
-const HomePage = () => {
-  const bestRecipes = [
-    {
-      id: 1,
-      name: "Espresso",
-      image: "https://static.vecteezy.com/system/resources/previews/023/438/448/original/espresso-coffee-cutout-free-png.png",
-    },
-    {
-      id: 2,
-      name: "Cappuccino",
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_cup_of_coffee.JPG",
-    },
-    {
-      id: 3,
-      name: "Latte",
-      image: "https://upload.wikimedia.org/wikipedia/commons/8/88/Latte_art.jpg",
-    },
-  ];
+const Homepage = () => {
+  console.log(supabase)
+  const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+  const fetchRecipes = async () => {
+    const { data, error } = await supabase.from("items").select("*");
+
+    if (error) {
+      console.error("Error fetching recipes:", error);
+      return;
+    }
+
+    setRecipes(data.map((recipe) => ({
+      ...recipe,
+      image: recipe.image || null,
+    })));
+  };
 
   return (
-    <div
-      className="min-h-screen bg-cover bg-center text-white flex flex-col items-center justify-center"
-      style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1556218014-c9233f1ebfcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080')",
-      }}
-    >
-      <div className="bg-black bg-opacity-50 p-6 text-center rounded-lg">
-        <h1 className="text-4xl font-bold mb-4">Welcome to CoffeeVerse</h1>
-        <p className="text-lg mb-6">
-          Explore the best coffee recipes from around the world.
-        </p>
-        <Link
-          to="/recipes"
-          className="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition duration-300"
-        >
-          Discover Recipes
-        </Link>
-      </div>
-
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-        {bestRecipes.map((recipe) => (
-          <div
-            key={recipe.id}
-            className="bg-white text-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
-          >
-            <img
-              src={recipe.image}
-              alt={recipe.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-xl font-bold">{recipe.name}</h3>
-              <p className="text-sm text-gray-700">A delightful coffee recipe.</p>
-              <Link
-                to={`/recipe/${recipe.id}`}
-                className="block mt-4 text-blue-500 hover:underline"
+    <div className="flex flex-col min-h-screen">
+      <div className="flex-grow p-6 bg-gradient-to-r from-yellow-100 via-yellow-200 to-yellow-300">
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-6">
+          <h1 className="text-4xl font-extrabold text-yellow-600 mb-6 text-center">
+            Welcome to <span className="text-yellow-700">CoffeeVerse</span>
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {recipes.map((recipe) => (
+              <div
+                key={recipe.id}
+                className="bg-yellow-50 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
               >
-                View Recipe
-              </Link>
-            </div>
+                <div className="w-full h-48 overflow-hidden flex items-center justify-center bg-gray-100 rounded-lg">
+                  {recipe.image ? (
+                    <img
+                      src={recipe.image}
+                      alt={recipe.name}
+                      className="object-cover w-full h-full"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-sm">No Image</span>
+                  )}
+                </div>
+                <h2 className="text-xl font-semibold text-yellow-700 mt-4">
+                  {recipe.name}
+                </h2>
+                <p className="text-gray-600 text-sm mt-2">
+                  {recipe.ingredients.split(",").slice(0, 2).join(",")}...
+                </p>
+                <div className="mt-4 flex justify-between items-center">
+                  <Link
+                    to={`/recipe/${recipe.id}`}
+                    className="text-yellow-600 font-medium hover:underline"
+                  >
+                    View
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
+      <Footer /> {/* Footer hanya ditambahkan di sini */}
     </div>
   );
 };
 
-export default HomePage;
+export default Homepage;

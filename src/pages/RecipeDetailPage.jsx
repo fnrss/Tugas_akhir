@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import supabase from "../Config/SupabaseClient";
 
 const RecipeDetailPage = () => {
+  console.log(supabase);
   const { id } = useParams();
   const navigate = useNavigate();
   const [recipe, setRecipe] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    image: "",
-    ingredients: "",
-    steps: "",
-  });
+  const [relatedRecipes, setRelatedRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/src/data/recipes.json")
-      .then((response) => response.json())
-      .then((data) => {
-        const selectedRecipe = data.find((item) => item.id === parseInt(id));
-        if (selectedRecipe) {
-          setRecipe(selectedRecipe);
-          setFormData(selectedRecipe);
-        }
-      });
+    fetchRecipe();
+    fetchRelatedRecipes();
   }, [id]);
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
+  // Fetch data dari Supabase untuk resep saat ini
+  const fetchRecipe = async () => {
+    const { data, error } = await supabase
+      .from("items")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error("Error fetching recipe:", error);
+      return;
+    }
+
+    setRecipe(data);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  // Fetch data dari Supabase untuk resep terkait
+  const fetchRelatedRecipes = async () => {
+    const { data, error } = await supabase
+      .from("items")
+      .select("id, name, image")
+      .neq("id", id) // Exclude current recipe
+      .limit(3); // Batasi 3 resep terkait
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    console.log("Updated Recipe:", formData);
-    setRecipe(formData);
-    setIsEditing(false);
+    if (error) {
+      console.error("Error fetching related recipes:", error);
+      return;
+    }
+
+    setRelatedRecipes(data);
   };
 
   if (!recipe) {
@@ -53,124 +58,63 @@ const RecipeDetailPage = () => {
     <div className="p-6 bg-gradient-to-r from-yellow-50 via-yellow-100 to-yellow-200 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <h1 className="text-3xl font-extrabold text-yellow-700 mb-6 text-center">
-          {isEditing ? "Edit Recipe" : recipe.name}
+          {recipe.name}
         </h1>
         <div className="flex justify-center mb-6">
           <img
-            src={
-              formData.image instanceof File
-                ? URL.createObjectURL(formData.image)
-                : recipe.image
-            }
+            src={recipe.image}
             alt={recipe.name}
             className="w-full max-w-md h-64 object-contain rounded shadow-md"
           />
         </div>
 
-        {isEditing ? (
-          <form onSubmit={handleSave} className="space-y-6">
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        <h2 className="text-lg font-bold text-gray-800">Ingredients</h2>
+        <p className="mb-4 text-gray-700">{recipe.ingredients}</p>
+        <h2 className="text-lg font-bold text-gray-800">Steps</h2>
+        <p className="mb-6 text-gray-700">{recipe.steps}</p>
+        <div className="flex justify-end space-x-4">
+          {/* Redirect to the edit page when clicking the "Edit" button */}
+          <button
+            onClick={() => navigate(`/edit/${id}`)} // Navigate to the edit page
+            className="bg-yellow-500 text-white px-6 py-2 rounded font-semibold hover:bg-yellow-600 transition"
+          >
+            Edit
+          </button>
+          <Link
+            to="/recipes"
+            className="bg-gray-500 text-white px-6 py-2 rounded font-semibold hover:bg-gray-600 transition"
+          >
+            Back to Recipes
+          </Link>
+        </div>
+      </div>
+
+      {/* Related recipes section */}
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold text-yellow-700 mb-4">More Recipe</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {relatedRecipes.map((related) => (
+            <div
+              key={related.id}
+              className="bg-white text-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
+            >
+              <img
+                src={related.image}
+                alt={related.name}
+                className="w-full h-48 object-cover"
               />
+              <div className="p-4">
+                <h3 className="text-xl font-bold">{related.name}</h3>
+                <Link
+                  to={`/recipe/${related.id}`}
+                  className="block mt-4 text-blue-500 hover:underline"
+                >
+                  View Recipe
+                </Link>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="image"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Upload Image
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.files[0] })
-                }
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="ingredients"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Ingredients
-              </label>
-              <textarea
-                id="ingredients"
-                name="ingredients"
-                value={formData.ingredients}
-                onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="steps"
-                className="block text-sm font-semibold text-gray-700 mb-2"
-              >
-                Steps
-              </label>
-              <textarea
-                id="steps"
-                name="steps"
-                value={formData.steps}
-                onChange={handleChange}
-                className="w-full border border-gray-300 px-4 py-2 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              />
-            </div>
-            <div className="flex justify-end space-x-4">
-              <button
-                type="submit"
-                className="bg-yellow-500 text-white px-6 py-2 rounded font-semibold hover:bg-yellow-600 transition"
-              >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={handleEditToggle}
-                className="bg-gray-500 text-white px-6 py-2 rounded font-semibold hover:bg-gray-600 transition"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        ) : (
-          <>
-            <h2 className="text-lg font-bold text-gray-800">Ingredients</h2>
-            <p className="mb-4 text-gray-700">{recipe.ingredients}</p>
-            <h2 className="text-lg font-bold text-gray-800">Steps</h2>
-            <p className="mb-6 text-gray-700">{recipe.steps}</p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleEditToggle}
-                className="bg-yellow-500 text-white px-6 py-2 rounded font-semibold hover:bg-yellow-600 transition"
-              >
-                Edit
-              </button>
-              <Link
-                to="/recipes"
-                className="bg-gray-500 text-white px-6 py-2 rounded font-semibold hover:bg-gray-600 transition"
-              >
-                Back to Recipe
-              </Link>
-            </div>
-          </>
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
