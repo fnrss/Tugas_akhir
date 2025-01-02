@@ -8,36 +8,31 @@ const AboutPage = () => {
           About <span className="text-yellow-700">CoffeeVerse</span>
         </h1>
         <p className="text-gray-700 mb-6 text-lg leading-relaxed">
-          Welcome to <span className="font-bold text-yellow-600">CoffeeVerse</span>, your ultimate destination for discovering and sharing coffee recipes from around the world. Whether you're a seasoned barista or a coffee enthusiast, our app is designed to inspire your creativity and elevate your coffee experience.
+          Selamat datang di <span className="font-bold text-yellow-600">CoffeeVerse</span>, Selamat datang di CoffeeVerse, tujuan utama Anda untuk menemukan dan berbagi resep kopi dari seluruh dunia. Baik Anda seorang barista berpengalaman maupun penggemar kopi, aplikasi kami dirancang untuk menginspirasi kreativitas Anda dan meningkatkan pengalaman minum kopi Anda.
         </p>
         <h2 className="text-2xl font-semibold text-yellow-700 mb-3">
-          Our Mission
+          Misi Kami
         </h2>
         <p className="text-gray-700 mb-6 leading-relaxed">
-          At <span className="font-bold text-yellow-600">CoffeeVerse</span>, we believe that coffee is more than just a beverage—it's an art, a science, and a culture. Our mission is to bring coffee lovers together by sharing unique recipes, tips, and techniques to make every cup extraordinary.
+          Di <span className="font-bold text-yellow-600">CoffeeVerse</span>,  kami percaya bahwa kopi lebih dari sekadar minuman - kopi adalah seni, ilmu pengetahuan, dan budaya. Misi kami adalah menyatukan para pecinta kopi dengan berbagi resep, tips, dan teknik unik untuk membuat setiap cangkir menjadi luar biasa.
         </p>
         <h2 className="text-2xl font-semibold text-yellow-700 mb-3">
-          What You'll Find
+        Apa yang akan Anda Temukan
         </h2>
         <ul className="list-disc list-inside text-gray-700 mb-6 space-y-2">
-          <li>Classic coffee recipes like Espresso, Latte, and Cappuccino.</li>
-          <li>Specialty drinks such as Cold Brew, Affogato, and Mocha.</li>
-          <li>Innovative and creative coffee recipes to try at home.</li>
-          <li>Step-by-step guides to brewing the perfect cup.</li>
+          <li>Resep kopi klasik seperti Espresso, Latte, dan Cappuccino.</li>
+          <li>Minuman khusus seperti Cold Brew, Affogato, dan Mocha.</li>
+          <li>Resep kopi yang inovatif dan kreatif untuk dicoba di rumah.</li>
+          <li>Panduan langkah demi langkah untuk menyeduh secangkir kopi yang sempurna.</li>
         </ul>
-        <h2 className="text-2xl font-semibold text-yellow-700 mb-3">Join Us</h2>
+        <h2 className="text-2xl font-semibold text-yellow-700 mb-3">Bergabunglah dengan Kami</h2>
         <p className="text-gray-700 mb-6 leading-relaxed">
-          We invite you to explore our collection of recipes, contribute your own creations, and become a part of our vibrant coffee-loving community. Let's make every cup count!
+        Kami mengundang Anda untuk menjelajahi koleksi resep kami, menyumbangkan kreasi Anda sendiri, dan menjadi bagian dari komunitas pencinta kopi kami yang dinamis. Mari kita buat setiap cangkir berarti!
         </p>
         <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
           <p className="text-yellow-700 italic text-center">
             "Coffee is a language in itself." – Jackie Chan
           </p>
-        </div>
-        <div className="flex justify-center">
-          <button className="bg-yellow-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-600 transition duration-300">
-            Explore Recipes
-          </button>
         </div>
       </div>
     </div>

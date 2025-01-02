@@ -91,18 +91,20 @@ const RecipeDetailPage = () => {
 
       {/* Related recipes section */}
       <div className="mt-10">
-        <h2 className="text-2xl font-bold text-yellow-700 mb-4">More Recipe</h2>
+        <h2 className="text-2xl font-bold text-yellow-700 mb-4">More Recipes</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {relatedRecipes.map((related) => (
             <div
               key={related.id}
               className="bg-white text-black rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
             >
-              <img
-                src={related.image}
-                alt={related.name}
-                className="w-full h-48 object-cover"
-              />
+              <div className="w-full h-48 bg-gray-100 flex justify-center items-center">
+                <img
+                  src={related.image}
+                  alt={related.name}
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="p-4">
                 <h3 className="text-xl font-bold">{related.name}</h3>
                 <Link
