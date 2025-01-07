@@ -13,7 +13,7 @@ const App = () => {
       <div className="min-h-screen bg-gray-100 text-gray-900">
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/Tugas_akhir/" element={<HomePage />} />
           <Route path="/recipes" element={<ShowRecipesPage />} /> 
           <Route path="/about" element={<AboutPage />} /> 
           <Route path="/recipe/:id" element={<RecipeDetailPage />} />

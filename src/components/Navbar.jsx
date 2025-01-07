@@ -68,7 +68,7 @@ const Navbar = () => {
         >
           <li className="py-2 lg:py-0">
             <Link
-              to="/"
+              to="/Tugas_akhir/"
               className="block lg:inline-block hover:text-gray-200 transition duration-300"
               onClick={closeMenu}
             >

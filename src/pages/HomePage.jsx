@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../Config/SupabaseClient";
 import Footer from "../components/Footer";
+import backgroundImage from "../assets/images/kopi3.jpg";
 
 const Homepage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -30,7 +31,7 @@ const Homepage = () => {
     <div
       className="relative flex flex-col min-h-screen"
       style={{
-        backgroundImage: `url('/images/kopi3.jpg')`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
