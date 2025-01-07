@@ -8,6 +8,10 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="bg-yellow-500 text-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -66,6 +70,7 @@ const Navbar = () => {
             <Link
               to="/"
               className="block lg:inline-block hover:text-gray-200 transition duration-300"
+              onClick={closeMenu}
             >
               Home
             </Link>
@@ -74,6 +79,7 @@ const Navbar = () => {
             <Link
               to="/recipes"
               className="block lg:inline-block hover:text-gray-200 transition duration-300"
+              onClick={closeMenu}
             >
               Recipes
             </Link>
@@ -82,6 +88,7 @@ const Navbar = () => {
             <Link
               to="/add"
               className="block lg:inline-block hover:text-gray-200 transition duration-300"
+              onClick={closeMenu}
             >
               Add Recipe
             </Link>
@@ -90,6 +97,7 @@ const Navbar = () => {
             <Link
               to="/about"
               className="block lg:inline-block hover:text-gray-200 transition duration-300"
+              onClick={closeMenu}
             >
               About
             </Link>
